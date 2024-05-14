@@ -10,6 +10,13 @@ type ExperienceProps = {
   menuOpened: boolean;
 };
 
+type StoreT = {
+  animationOn: boolean;
+  setAnimation: (value: boolean) => void;
+  sectionY: number;
+  setSectionY: (y: number) => void;
+};
+
 export const Experience: FC<ExperienceProps> = ({ menuOpened }) => {
   const [cameraMove, setCameraMove] = useState(false);
   const cameraPositionX = useMotionValue(0);
@@ -20,7 +27,7 @@ export const Experience: FC<ExperienceProps> = ({ menuOpened }) => {
 
   const controls = useAnimationControls();
 
-  const { sectionY } = useStore();
+  const { sectionY } = useStore() as StoreT;
 
   useEffect(() => {
     animate(cameraPositionX, menuOpened ? 3 : 8);
