@@ -16,10 +16,8 @@
     "@react-three/drei": "9.83.8",
     "@react-three/fiber": "8.13.3",
     "@react-three/postprocessing": "^2.16.2",
-    "@types/three": "^0.146.0",
     "framer-motion": "^11.1.7",
     "framer-motion-3d": "^11.1.7",
-    "gsap": "^3.12.5",
     "leva": "^0.9.35",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
@@ -32,6 +30,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@types/three": "^0.146.0",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
