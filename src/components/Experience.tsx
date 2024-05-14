@@ -20,6 +20,8 @@ export const Experience: FC<ExperienceProps> = ({ menuOpened }) => {
 
   const controls = useAnimationControls();
 
+  const { sectionY } = useStore();
+
   useEffect(() => {
     animate(cameraPositionX, menuOpened ? 3 : 8);
     animate(cameraLootAtX, menuOpened ? 1 : 0);
