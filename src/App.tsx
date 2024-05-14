@@ -15,6 +15,8 @@ const MIN_SECTION = 0;
 const NEXT = ["KeyW", "KeyD"];
 const PREV = ["KeyS", "KeyA"];
 
+type StoreT = { animationOn: boolean; setAnimation: (value: boolean) => void };
+
 function App() {
   const [keyStatus, setKeyStatus] = useState("");
   const [menuOpened, setMenuOpened] = useState(false);

@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 
 let mouseX = 0;
 let mouseY = 0;
-let outlineX = 0;
-let outlineY = 0;
+const outlineX = 0;
+const outlineY = 0;
 
 export const Cursor = () => {
   const cursorOutline = useRef<HTMLDivElement>(null);
