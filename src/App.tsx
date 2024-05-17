@@ -8,19 +8,13 @@ import { Cursor } from "~/components/Cursor";
 import { Keyboard } from "~/components/Keyboard";
 import Wrapper from "./components/Face";
 import useStore from "~/context/store";
+import { Sky } from "@react-three/drei";
 
 const MAX_SECTION = 4;
 const MIN_SECTION = 0;
 
 const NEXT = ["KeyW", "KeyD"];
 const PREV = ["KeyS", "KeyA"];
-
-type StoreT = {
-  animationOn: boolean;
-  setAnimation: (value: boolean) => void;
-  sectionY: number;
-  setSectionY: (y: number) => void;
-};
 
 function App() {
   const [keyStatus, setKeyStatus] = useState("");
@@ -58,6 +52,7 @@ function App() {
     cubePosition,
     setCubePosition,
     setOverlayVisibility,
+    isMobile,
   }: any = useStore();
 
   const keyDown = (event: KeyboardEvent) => {
@@ -111,8 +106,10 @@ function App() {
             ...framerMotionConfig,
           }}
         >
-          <Canvas camera={{ position: [0, -1, 8], fov: 32 }}>
+          <Canvas camera={{ position: [0, -1, 8], fov: !isMobile ? 32 : 55 }}>
             <color attach="background" args={["#000"]} />
+            <Sky />
+            <ambientLight intensity={1} />
             <Wrapper />
             <Experience menuOpened={menuOpened} />
           </Canvas>
@@ -122,7 +119,13 @@ function App() {
             setMenuOpened={setMenuOpened}
           />
           <Cursor />
-          <Keyboard keyStatus={keyStatus} />
+          {!isMobile && <Keyboard keyStatus={keyStatus} />}
+          {isMobile && (
+            <img
+              src="16-43-54-176_512.gif"
+              className="absolute right-11 w-10 h-10 bottom-20 rounded-3xl	"
+            />
+          )}
         </MotionConfig>
       </div>
     </>

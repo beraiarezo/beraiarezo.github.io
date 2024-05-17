@@ -37,6 +37,7 @@ const Face: FC<FaceProps> = React.memo(({ page }) => {
     cubeAnimation,
     setOverlayVisibility,
     isOverlayVisible,
+    isMobile,
   }: any = useStore();
 
   const {
@@ -65,6 +66,10 @@ const Face: FC<FaceProps> = React.memo(({ page }) => {
   });
 
   const handleImageClick = (img: TImage) => {
+    if (isMobile) {
+      window.open(img.link || img.websiteURL, "_blank");
+      return;
+    }
     setOverlayVisibility(true);
     setViewConfig({
       link: img.link,

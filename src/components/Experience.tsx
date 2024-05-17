@@ -1,5 +1,5 @@
 import { useEffect, useState, FC } from "react";
-import { OrbitControls, Sky, RoundedBox } from "@react-three/drei";
+import { RoundedBox } from "@react-three/drei";
 import { motion } from "framer-motion-3d";
 import { useFrame } from "@react-three/fiber";
 import { animate, useMotionValue, useAnimationControls } from "framer-motion";
@@ -8,13 +8,6 @@ import useStore from "~/context/store";
 
 type ExperienceProps = {
   menuOpened: boolean;
-};
-
-type StoreT = {
-  animationOn: boolean;
-  setAnimation: (value: boolean) => void;
-  sectionY: number;
-  setSectionY: (y: number) => void;
 };
 
 export const Experience: FC<ExperienceProps> = ({ menuOpened }) => {
@@ -26,8 +19,6 @@ export const Experience: FC<ExperienceProps> = ({ menuOpened }) => {
   const vec = new THREE.Vector3();
 
   const controls = useAnimationControls();
-
-  const { sectionY } = useStore() as StoreT;
 
   useEffect(() => {
     animate(cameraPositionX, menuOpened ? 3 : 8);
@@ -70,9 +61,6 @@ export const Experience: FC<ExperienceProps> = ({ menuOpened }) => {
 
   return (
     <>
-      <OrbitControls />
-      <Sky />
-      <ambientLight intensity={1} />
       <motion.group scale={3} animate={controls}>
         <RoundedBox
           args={[1, 1, 1]}

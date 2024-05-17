@@ -12,7 +12,7 @@ const useStore = create((set) => ({
   isOverlayVisible: false,
   setOverlayVisibility: (isVisible: boolean) =>
     set(() => ({ isOverlayVisible: isVisible })),
-  isMobile: false,
+  isMobile: window.innerWidth <= 1024 ? true : false,
   setIsMobile: (isMobile: boolean) =>
     set(() => {
       isMobile;
