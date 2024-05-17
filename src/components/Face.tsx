@@ -38,7 +38,7 @@ const Face: FC<FaceProps> = React.memo(({ page }) => {
     setOverlayVisibility,
     isOverlayVisible,
     isMobile,
-  }: any = useStore();
+  } = useStore();
 
   const {
     title,

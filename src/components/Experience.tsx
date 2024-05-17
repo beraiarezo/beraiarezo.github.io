@@ -14,7 +14,7 @@ export const Experience: FC<ExperienceProps> = ({ menuOpened }) => {
   const [cameraMove, setCameraMove] = useState(false);
   const cameraPositionX = useMotionValue(0);
   const cameraLootAtX = useMotionValue(0);
-  const { cubePosition, isOverlayVisible }: any = useStore();
+  const { cubePosition, isOverlayVisible } = useStore();
 
   const vec = new THREE.Vector3();
 

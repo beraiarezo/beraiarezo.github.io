@@ -53,7 +53,7 @@ function App() {
     setCubePosition,
     setOverlayVisibility,
     isMobile,
-  }: any = useStore();
+  } = useStore();
 
   const keyDown = (event: KeyboardEvent) => {
     setCubeAnimation(true);
