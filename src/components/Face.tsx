@@ -66,6 +66,10 @@ const Face: FC<FaceProps> = React.memo(({ page }) => {
   });
 
   const handleImageClick = (img: TImage) => {
+    if (img.target) {
+      return window.open(img.target, "_blank");
+    }
+
     if (isMobile) {
       window.open(img.link || img.websiteURL, "_blank");
       return;
