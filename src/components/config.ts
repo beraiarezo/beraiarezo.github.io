@@ -55,6 +55,7 @@ const SKILL_LIST: TImageList = {
 
 const page: TPage[] = [
   {
+    page: 0,
     startScale: 0,
     title: "Who am I?",
     titlePos: [0, 12, 0],
@@ -90,6 +91,7 @@ const page: TPage[] = [
     ],
   },
   {
+    page: 1,
     startScale: 0,
     title: "EXPERIENCE",
     titlePos: [0.75, 0.62, 0.4],
@@ -105,12 +107,13 @@ const page: TPage[] = [
     infos: [
       {
         text: "You have the option to explore further details by clicking on the icons.",
-        pos: [0.75, -0.62, 0.3],
+        pos: [0.75, -0.6, 0.4],
         scale: 0.045,
       },
     ],
   },
   {
+    page: 2,
     startScale: 0,
     title: "SKILLS",
     titlePos: [0.85, 0.65, 0.36],
@@ -133,6 +136,7 @@ const page: TPage[] = [
     ],
   },
   {
+    page: 3,
     startScale: 0,
     title: "Here's my résumé!",
     titlePos: [0.3, 0.99, 0.41],
@@ -163,10 +167,11 @@ const page: TPage[] = [
     ],
   },
   {
+    page: 4,
     rotateY: Math.PI / 2,
     startScale: 1,
     title: "You can find me in:",
-    titlePos: [0, 0.55, 2],
+    titlePos: [0, 0.55, 1.8],
     titleScale: 0.1,
     meshProps: {
       pos: [0, 0, -1],

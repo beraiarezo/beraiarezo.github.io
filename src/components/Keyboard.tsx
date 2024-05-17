@@ -49,8 +49,8 @@ export const Keyboard: FC<KeyboardProps> = ({ keyStatus }) => {
           </motion.div>
           <motion.div
             className="key relative"
-            whileHover={{ scale: 1.1 }} // Scale up on hover
-            whileTap={{ scale: 0.9 }} // Scale down on click
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             animate={{ scale: keyStatus === "KeyD" ? 0.9 : 1 }}
           >
             <div className="text-lg absolute left-2 top-2 font-extrabold">

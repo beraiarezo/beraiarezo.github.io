@@ -3,6 +3,7 @@ import { Vector3, Camera } from "three";
 type TCvector = Vector3 | [x: number, y: number, z: number];
 
 export type TPage = {
+  page: number;
   startScale: number;
   title: string;
   titlePos: TCvector;

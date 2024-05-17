@@ -4,55 +4,60 @@ import { motion } from "framer-motion-3d";
 import { useFrame } from "@react-three/fiber";
 import { animate, useMotionValue, useAnimationControls } from "framer-motion";
 import * as THREE from "three";
+import useStore from "~/context/store";
 
 type ExperienceProps = {
-  sectionY: number;
   menuOpened: boolean;
 };
 
-export const Experience: FC<ExperienceProps> = ({ sectionY, menuOpened }) => {
+export const Experience: FC<ExperienceProps> = ({ menuOpened }) => {
+  const [cameraMove, setCameraMove] = useState(false);
   const cameraPositionX = useMotionValue(0);
   const cameraLootAtX = useMotionValue(0);
+  const { cubePosition, isOverlayVisible }: any = useStore();
+
+  const vec = new THREE.Vector3();
+
+  const controls = useAnimationControls();
 
   useEffect(() => {
     animate(cameraPositionX, menuOpened ? 3 : 8);
     animate(cameraLootAtX, menuOpened ? 1 : 0);
   }, [menuOpened]);
 
-  const [cameraMove, setCameraMove] = useState(false);
-
   useEffect(() => {
     if (cameraMove) {
-      animate(cameraPositionX, menuOpened ? -5 : 0);
-      animate(cameraLootAtX, menuOpened ? 3 : 0);
+      animate(cameraPositionX, menuOpened ? -5 : 0, { duration: 5 });
+      animate(cameraLootAtX, menuOpened ? 3 : 0, { duration: 5 });
     }
   }, [cameraMove]);
 
-  const vec = new THREE.Vector3();
+  useEffect(() => {
+    if (cubePosition < 4) {
+      controls.start({
+        rotateX: (-Math.PI / 2) * cubePosition,
+        transition: { duration: 0.3 },
+      });
+      setCameraMove(false);
+    } else {
+      setCameraMove(true);
+    }
+  }, [cubePosition]);
+
   useFrame((state) => {
     if (cameraMove) {
       state.camera.position.lerp(vec.set(8, 0, 0), 0.02);
     } else {
       state.camera.position.lerp(vec.set(0, -1, 8), 0.02);
     }
-
     if (menuOpened) {
-      state.camera.position.lerp(vec.set(!cameraMove ? -13 : 13, 1, 5), 0.03);
+      state.camera.position.lerp(vec.set(!cameraMove ? -13 : 13, 1, 5), 0.02);
     }
 
-    state.camera.lookAt(cameraLootAtX.get(), 0, 0);
+    if (!isOverlayVisible) {
+      state.camera.lookAt(cameraLootAtX.get(), 0, 0);
+    }
   });
-
-  const controls = useAnimationControls();
-
-  useEffect(() => {
-    if (sectionY < 4) {
-      controls.start({ rotateX: (-Math.PI / 2) * sectionY });
-      setCameraMove(false);
-    } else {
-      setCameraMove(true);
-    }
-  }, [sectionY]);
 
   return (
     <>
@@ -67,7 +72,10 @@ export const Experience: FC<ExperienceProps> = ({ sectionY, menuOpened }) => {
           bevelSegments={4}
           creaseAngle={0.4}
         >
-          <meshPhongMaterial color="royalblue" />
+          {!menuOpened && (
+            <meshPhongMaterial color="royalblue" wireframe={menuOpened} />
+          )}
+          {menuOpened && <meshNormalMaterial wireframe={menuOpened} />}
         </RoundedBox>
       </motion.group>
     </>

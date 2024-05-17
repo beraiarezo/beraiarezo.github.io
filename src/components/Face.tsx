@@ -1,19 +1,43 @@
-import { useState, useEffect, FC } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { Text, Image, Html } from "@react-three/drei";
 import { motion } from "framer-motion-3d";
 import { animate, MotionValue, useMotionValue } from "framer-motion";
 import { useFrame } from "@react-three/fiber";
 import { TPage, TImageList, TImage, TInfo, FrameState } from "~/Types";
+import { config } from "./config";
+import useStore from "~/context/store";
+
+export const Wrapper = React.memo(() => {
+  const { pages } = config;
+  return (
+    <>
+      {pages.map((page, index) => (
+        <Face page={page} key={index} />
+      ))}
+    </>
+  );
+});
 
 type FaceProps = {
   page: TPage;
 };
 
-const Face: FC<FaceProps> = ({ page }) => {
-  const [webUrl, setWebUrl] = useState<string | null>(null);
-  const [link, setLink] = useState<string | null>(null);
+const Face: FC<FaceProps> = React.memo(({ page }) => {
+  const [viewConfig, setViewConfig] = useState<{
+    webUrl?: string;
+    link?: string;
+  }>({});
+
+  const { webUrl, link } = viewConfig;
+
   const cameraPositionX: MotionValue<number> = useMotionValue(0);
   const cameraLootAtX: MotionValue<number> = useMotionValue(0);
+  const {
+    cubePosition,
+    cubeAnimation,
+    setOverlayVisibility,
+    isOverlayVisible,
+  }: any = useStore();
 
   const {
     title,
@@ -29,30 +53,23 @@ const Face: FC<FaceProps> = ({ page }) => {
   } = page;
 
   useEffect(() => {
-    animate(cameraPositionX, webUrl || link ? 5 : 0);
-    animate(cameraLootAtX, webUrl || link ? -5 : 0);
-  }, [webUrl, link]);
+    animate(cameraPositionX, (webUrl || link) && isOverlayVisible ? 5 : 0);
+    animate(cameraLootAtX, (webUrl || link) && isOverlayVisible ? -5 : 0);
+  }, [webUrl, link, isOverlayVisible]);
 
   useFrame((state: FrameState) => {
-    if (webUrl || link) {
+    if ((webUrl || link) && isOverlayVisible) {
       state.camera.position.x = cameraPositionX.get();
-
       state.camera.lookAt(cameraLootAtX.get(), 0, 0);
     }
   });
 
   const handleImageClick = (img: TImage) => {
-    if (img.websiteURL) {
-      setLink(null);
-      setWebUrl(img.websiteURL);
-    } else if (img.target) {
-      window.open(img.target, "_blank");
-    } else if (img.link) {
-      setWebUrl(null);
-      setLink(img.link);
-    } else {
-      setWebUrl(null);
-    }
+    setOverlayVisibility(true);
+    setViewConfig({
+      link: img.link,
+      webUrl: img.websiteURL,
+    });
   };
 
   const calculatePositions = (imageList: TImageList, index: number) => {
@@ -70,9 +87,18 @@ const Face: FC<FaceProps> = ({ page }) => {
     };
   };
 
+  let sc = 0;
+  if (!cubeAnimation) {
+    if (page.page === cubePosition) {
+      sc = pageCords.scale;
+    }
+  }
+
   return (
     <>
-      {(webUrl || link) && <HtmlOverlay link={link} webUrl={webUrl} />}
+      {(webUrl || link) && isOverlayVisible && (
+        <HtmlOverlay link={link} webUrl={webUrl} />
+      )}
       <motion.group
         initial={{
           scale: startScale,
@@ -80,11 +106,10 @@ const Face: FC<FaceProps> = ({ page }) => {
         }}
         position={pageCords.pos}
         animate={{
-          scale: pageCords.scale,
+          scale: sc,
         }}
         transition={{
           duration: 0.3,
-          delay: 0.5,
         }}
       >
         <mesh position={meshProps.pos}>
@@ -105,7 +130,7 @@ const Face: FC<FaceProps> = ({ page }) => {
                     animate={{
                       scale: 1,
                     }}
-                    transition={{ delay: index / 4 }}
+                    transition={{ delay: index / 3 }}
                   >
                     <Image
                       onClick={() => handleImageClick(img)}
@@ -133,9 +158,9 @@ const Face: FC<FaceProps> = ({ page }) => {
       </motion.group>
     </>
   );
-};
+});
 
-type TOverlay<K extends string = "link" | "webUrl", T = string | null> = {
+type TOverlay<K extends string = "link" | "webUrl", T = string | undefined> = {
   [key in K]: T;
 };
 
@@ -155,16 +180,7 @@ const HtmlOverlay: FC<TOverlay> = ({ link, webUrl }) => {
       }}
     >
       {!link && (
-        <div
-          style={{
-            position: "absolute",
-            zIndex: 0,
-            top: "50%",
-            left: "50%",
-            fontSize: 24,
-            fontWeight: "bold",
-          }}
-        >
+        <div className="left-2/4 top-2/4 text-2xl font-bold absolute">
           {"Loading..."}
         </div>
       )}
@@ -188,12 +204,7 @@ const HtmlOverlay: FC<TOverlay> = ({ link, webUrl }) => {
       {webUrl && (
         <iframe
           title={"Description"}
-          style={{
-            height: "100%",
-            width: "100%",
-            zIndex: 100,
-            position: "absolute",
-          }}
+          className="w-full h-full absolute z-50"
           src={webUrl}
         />
       )}
@@ -201,4 +212,4 @@ const HtmlOverlay: FC<TOverlay> = ({ link, webUrl }) => {
   );
 };
 
-export default Face;
+export default Wrapper;

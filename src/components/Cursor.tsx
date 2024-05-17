@@ -9,7 +9,6 @@ export const Cursor = () => {
   const cursorOutline = useRef<HTMLDivElement>(null);
 
   const animate = () => {
-    console.log("animaa");
     let distX = mouseX - outlineX - 10;
     let distY = mouseY - outlineY - 10;
 
@@ -28,12 +27,13 @@ export const Cursor = () => {
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => mouseMove(event);
 
+    const animationEvent = requestAnimationFrame(animate);
+
     document.addEventListener("mousemove", handleMouseMove);
 
-    // const animationEvent = requestAnimationFrame(animate);
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
-      // cancelAnimationFrame(animationEvent);
+      cancelAnimationFrame(animationEvent);
     };
   }, []);
 

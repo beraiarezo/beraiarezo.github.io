@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 
 type MenuProps = {
   onSectionChange: (x: number) => void;
@@ -6,56 +6,54 @@ type MenuProps = {
   menuOpened: boolean;
 };
 
-export const Menu: FC<MenuProps> = ({
-  onSectionChange,
-  setMenuOpened,
-  menuOpened,
-}) => {
-  return (
-    <>
-      <button
-        onClick={() => setMenuOpened(!menuOpened)}
-        className="z-20 fixed top-12 right-12 p-3 bg-indigo-600 w-11 h-11 rounded-md"
-      >
+export const Menu: FC<MenuProps> = React.memo(
+  ({ onSectionChange, setMenuOpened, menuOpened }) => {
+    return (
+      <>
+        <button
+          onClick={() => setMenuOpened(!menuOpened)}
+          className="z-20 fixed top-12 right-12 p-3 bg-indigo-600 w-11 h-11 rounded-md"
+        >
+          <div
+            className={`bg-white h-0.5 rounded-md w-full transition-all ${
+              menuOpened ? "rotate-45 translate-y-0.5" : ""
+            }`}
+          />
+          <div
+            className={`bg-white h-0.5 rounded-md w-full my-1 ${
+              menuOpened ? "hidden" : ""
+            }`}
+          />
+          <div
+            className={`bg-white h-0.5 rounded-md w-full transition-all ${
+              menuOpened ? "-rotate-45" : ""
+            }`}
+          />
+        </button>
         <div
-          className={`bg-white h-0.5 rounded-md w-full transition-all ${
-            menuOpened ? "rotate-45 translate-y-0.5" : ""
+          className={`z-10 fixed top-0 right-0 bottom-0 bg-white transition-all overflow-hidden flex flex-col ${
+            menuOpened ? "w-64" : "w-0"
           }`}
-        />
-        <div
-          className={`bg-white h-0.5 rounded-md w-full my-1 ${
-            menuOpened ? "hidden" : ""
-          }`}
-        />
-        <div
-          className={`bg-white h-0.5 rounded-md w-full transition-all ${
-            menuOpened ? "-rotate-45" : ""
-          }`}
-        />
-      </button>
-      <div
-        className={`z-10 fixed top-0 right-0 bottom-0 bg-white transition-all overflow-hidden flex flex-col ${
-          menuOpened ? "w-64" : "w-0"
-        }`}
-      >
-        <div className="flex-1 flex items-start justify-center flex-col gap-6 p-8">
-          <MenuButton label="About" onClick={() => onSectionChange(0)} />
-          <MenuButton label="Experience" onClick={() => onSectionChange(1)} />
-          <MenuButton label="Skills" onClick={() => onSectionChange(2)} />
-          <MenuButton label="Resume" onClick={() => onSectionChange(3)} />
-          <MenuButton label="Contact" onClick={() => onSectionChange(4)} />
+        >
+          <div className="flex-1 flex items-start justify-center flex-col gap-6 p-8">
+            <MenuButton label="About" onClick={() => onSectionChange(0)} />
+            <MenuButton label="Experience" onClick={() => onSectionChange(1)} />
+            <MenuButton label="Skills" onClick={() => onSectionChange(2)} />
+            <MenuButton label="Resume" onClick={() => onSectionChange(3)} />
+            <MenuButton label="Contact" onClick={() => onSectionChange(4)} />
+          </div>
         </div>
-      </div>
-    </>
-  );
-};
+      </>
+    );
+  }
+);
 
 type ButtonProps = {
   label: string;
   onClick: () => void;
 };
 
-const MenuButton: FC<ButtonProps> = ({ label, onClick }) => {
+const MenuButton: FC<ButtonProps> = React.memo(({ label, onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -64,4 +62,4 @@ const MenuButton: FC<ButtonProps> = ({ label, onClick }) => {
       {label}
     </button>
   );
-};
+});
