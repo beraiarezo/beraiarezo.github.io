@@ -68,3 +68,4 @@ To run this project locally, follow these steps:
 - **React Fiber:** Concurrent rendering engine for React.
 - **Three.js:** JavaScript 3D library for creating 3D graphics in the browser.
 - **Tailwindcss:** For styling React components.
+- **TypeScript:** Superset of JavaScript that adds static typing to the language.
