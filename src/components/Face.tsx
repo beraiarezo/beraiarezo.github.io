@@ -65,6 +65,14 @@ const Face: FC<FaceProps> = React.memo(({ page }) => {
   });
 
   const handleImageClick = (img: TImage) => {
+    if (img.target) {
+      window.open(img.target, "_blank");
+      return;
+    }
+    if (!img.websiteURL) {
+      return;
+    }
+
     setOverlayVisibility(true);
     setViewConfig({
       link: img.link,
