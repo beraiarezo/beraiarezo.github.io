@@ -156,7 +156,13 @@ const page: TPage[] = [
       leftPadding: 0,
       topPadding: 0,
       scale: 1,
-      images: [{ url: "icons/resume.svg", pos: [1, 1, 1] }],
+      images: [
+        {
+          url: "icons/resume.svg",
+          pos: [1, 1, 1],
+          target: "Rezo.pdf",
+        },
+      ],
     },
     infos: [
       {
